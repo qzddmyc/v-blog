@@ -17,6 +17,9 @@
 
 <script>
 import Icon from "@/components/Icon";
+import qrCode_qq from "@/img/qrcode-qq.png";
+import qrCode_vx from "@/img/qrcode-vx.png";
+
 export default {
   components: { Icon },
   data() {
@@ -38,13 +41,13 @@ export default {
           ref: "//qq.com",
           iconType: "qq",
           txt: "3241982429",
-          qrCode: "https://picsum.photos/200",
+          qrCode: qrCode_qq,
         },
         {
           ref: null,
           iconType: "weixin",
           txt: "Methry-qzddmyc",
-          qrCode: "https://picsum.photos/200/200",
+          qrCode: qrCode_vx,
         },
       ],
     };
