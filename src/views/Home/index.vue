@@ -1,18 +1,35 @@
 <template>
-  <div class="home-container">
-    <ul>
+  <div class="home-container" ref="homeContainer">
+    <ul
+      class="carousel-container"
+      :style="{ marginTop: marginTop }"
+      @wheel="debounceMouseWheel"
+    >
       <li v-for="item in banners" :key="item.id">
         <CarouselItem />
       </li>
     </ul>
-    <div class="icon icon-up">
+    <div
+      class="icon icon-up"
+      v-show="banners.length && index >= 1"
+      @click="switchTo(index - 1)"
+    >
       <Icon type="arrowUp" />
     </div>
-    <div class="icon icon-down">
+    <div
+      class="icon icon-down"
+      v-show="banners.length && index < banners.length - 1"
+      @click="switchTo(index + 1)"
+    >
       <Icon type="arrowDown" />
     </div>
     <ul class="indicator">
-      <li v-for="item in banners" :key="item.id"></li>
+      <li
+        v-for="(item, idx) in banners"
+        :key="item.id"
+        :class="{ active: index === idx }"
+        @click="switchTo(idx)"
+      ></li>
     </ul>
   </div>
 </template>
@@ -26,14 +43,40 @@ export default {
   data() {
     return {
       banners: [],
+      index: 0, // 当前显示的第几张轮播图，0-based
+      containerHeight: 0, // home-container的高度
+      debounceMouseWheel: () => {},
     };
   },
   components: {
     Icon,
     CarouselItem,
   },
+  computed: {
+    marginTop() {
+      return -this.index * this.containerHeight + "px";
+    },
+  },
   async created() {
+    this.debounceMouseWheel = this.$debounce(this.mouseWheel, 200);
     this.banners = await getBanner();
+  },
+  mounted() {
+    this.containerHeight = this.$refs.homeContainer.clientHeight;
+  },
+  beforeDestroy() {
+    this.debounceMouseWheel.cancel && this.debounceMouseWheel.cancel();
+  },
+  methods: {
+    switchTo(idx) {
+      if (this.index === idx) return;
+      if (idx < 0 || idx >= this.banners.length) return;
+      this.index = idx;
+    },
+    mouseWheel(e) {
+      if (e.deltaY > 0) this.switchTo(this.index + 1);
+      else if (e.deltaY < 0) this.switchTo(this.index - 1);
+    },
   },
 };
 </script>
@@ -46,8 +89,20 @@ export default {
   width: 100%;
   height: 100%;
   position: relative;
+  overflow: hidden; // 避免外边距合并
   ul {
     margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .carousel-container {
+    width: 100%;
+    height: 100%;
+    transition: 0.5s;
+    li {
+      width: 100%;
+      height: 100%;
+    }
   }
   .icon {
     @gap: 30px;
@@ -89,6 +144,49 @@ export default {
       }
       100% {
         transform: translate(-50%, @animate-gap);
+      }
+    }
+  }
+  .indicator {
+    .self-center();
+    transform: translateY(-50%);
+    left: auto;
+    right: 25px;
+    li {
+      @size: 8px;
+      @white-color: #fff;
+      width: @size;
+      height: @size;
+      margin-bottom: 7px;
+      cursor: pointer;
+      position: relative;
+      &::before {
+        display: block;
+        content: "";
+        width: inherit;
+        height: inherit;
+        background-color: @white-color;
+        border-radius: 50%;
+        z-index: 10;
+      }
+      &::after {
+        @size-small: @size / 10 * 7;
+        display: block;
+        content: "";
+        width: @size-small;
+        height: @size-small;
+        background-color: @words;
+        border-radius: 50%;
+        .self-center();
+        z-index: 20;
+      }
+      &.active {
+        &::after {
+          background-color: @white-color;
+        }
+      }
+      &:last-child {
+        margin-bottom: 0;
       }
     }
   }

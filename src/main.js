@@ -4,8 +4,9 @@ import App from './App.vue';
 import "./styles/global.less";
 import router from './router';
 
-import { showMessage } from './utils';
+import { showMessage, debounce } from './utils';
 Vue.prototype.$showMessage = showMessage;
+Vue.prototype.$debounce = debounce;
 
 new Vue({
   router,

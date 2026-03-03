@@ -28,7 +28,6 @@ export default {
 @import "~@/styles/mixin.less";
 .app-container {
   .self-fill(fixed);
-  background-color: #ccc;
   .aside {
     width: 288px;
     height: 100%;
