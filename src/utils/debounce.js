@@ -5,7 +5,7 @@
  * @param {boolean} immediate - 是否立即执行（true=首次触发立即执行，false=最后一次触发后执行）
  * @returns {Function} - 包装后的防抖函数
  */
-export default function (func, wait = 300, immediate = false) {
+function debounce(func, wait = 300, immediate = false) {
   let timeoutId = null;
 
   const debounced = function (...args) {
@@ -31,3 +31,5 @@ export default function (func, wait = 300, immediate = false) {
 
   return debounced;
 }
+
+export default debounce;
