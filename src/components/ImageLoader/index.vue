@@ -53,6 +53,8 @@ export default {
 .image-loager-container {
   position: relative;
   overflow: hidden;
+  width: 100%;
+  height: 100%;
   img {
     .self-fill();
     object-fit: cover;

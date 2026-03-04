@@ -5,8 +5,12 @@
       :style="{ marginTop: marginTop }"
       @wheel="debounceMouseWheel"
     >
-      <li v-for="item in banners" :key="item.id">
-        <CarouselItem />
+      <li v-for="(item, idx) in banners" :key="item.id">
+        <CarouselItem
+          :carousel="item"
+          :idxOfThis="idx"
+          :CurrentShowingIdx="index"
+        />
       </li>
     </ul>
     <div
@@ -62,10 +66,12 @@ export default {
     this.banners = await getBanner();
   },
   mounted() {
-    this.containerHeight = this.$refs.homeContainer.clientHeight;
+    this.handleResize();
+    window.addEventListener("resize", this.handleResize);
   },
   beforeDestroy() {
     this.debounceMouseWheel.cancel && this.debounceMouseWheel.cancel();
+    window.removeEventListener("resize", this.handleResize);
   },
   methods: {
     switchTo(idx) {
@@ -76,6 +82,9 @@ export default {
     mouseWheel(e) {
       if (e.deltaY > 0) this.switchTo(this.index + 1);
       else if (e.deltaY < 0) this.switchTo(this.index - 1);
+    },
+    handleResize() {
+      this.containerHeight = this.$refs.homeContainer.clientHeight;
     },
   },
 };
