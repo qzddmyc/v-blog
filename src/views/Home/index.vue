@@ -92,7 +92,7 @@ export default {
     },
     _isTransitionCausedByMarginTop(event) {
       return (
-        event.propertyName &&
+        !!event?.propertyName &&
         ["marginTop", "margin-top"].includes(event.propertyName)
       );
     },
