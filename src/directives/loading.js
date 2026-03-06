@@ -16,9 +16,6 @@ function updateStatus(el, binding) {
   const existedLoadingDom = getExistedLoadingDom(el);
   if (binding.value) {
     if (existedLoadingDom) return;
-    if (el && getComputedStyle(el).position === "static") {
-      el.style.position = 'relative';
-    }
     const d = createLoading();
     el.appendChild(d);
   } else {
@@ -28,10 +25,15 @@ function updateStatus(el, binding) {
 
 // 导出指令的配置对象
 export default {
-  inserted(...args) {
+  bind(...args) {
     updateStatus(...args);
   },
-  update(...args) {
-    updateStatus(...args)
+  inserted(el) {
+    if (el && getComputedStyle(el).position === "static") {
+      el.style.position = 'relative';
+    }
+  },
+  update(el, binding) {
+    binding.value !== binding.oldValue && updateStatus(el, binding);
   }
 }
