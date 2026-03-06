@@ -4,12 +4,15 @@
       class="carousel-container"
       :style="{ marginTop: marginTop }"
       @wheel="debounceMouseWheel"
+      @transitionstart="handleTransitionStart"
+      @transitionend="handleTransitionEnd"
     >
       <li v-for="(item, idx) in banners" :key="item.id">
         <CarouselItem
           :carousel="item"
           :idxOfThis="idx"
-          :CurrentShowingIdx="index"
+          :currentShowingIdx="index"
+          :inTransition="inTransition"
         />
       </li>
     </ul>
@@ -50,6 +53,7 @@ export default {
       index: 0, // 当前显示的第几张轮播图，0-based
       containerHeight: 0, // home-container的高度
       debounceMouseWheel: () => {},
+      inTransition: false, // 是否正在页面的切换，传递给子组件，用于刷新数据
     };
   },
   components: {
@@ -86,6 +90,20 @@ export default {
     handleResize() {
       this.containerHeight = this.$refs.homeContainer.clientHeight;
     },
+    _isTransitionCausedByMarginTop(event) {
+      return (
+        event.propertyName &&
+        ["marginTop", "margin-top"].includes(event.propertyName)
+      );
+    },
+    handleTransitionStart(e) {
+      if (!this._isTransitionCausedByMarginTop(e)) return;
+      this.inTransition = true;
+    },
+    handleTransitionEnd(e) {
+      if (!this._isTransitionCausedByMarginTop(e)) return;
+      this.inTransition = false;
+    },
   },
 };
 </script>
@@ -99,6 +117,15 @@ export default {
   height: 100%;
   position: relative;
   overflow: hidden; // 避免外边距合并
+
+  // Test
+  // width: 400px;
+  // height: 300px;
+  // overflow: visible;
+  // margin: 0 auto;
+  // margin-top: 150px;
+  // border: 2px solid #008c8c;
+
   ul {
     margin: 0;
     padding: 0;

@@ -34,14 +34,12 @@ export default {
   },
   methods: {
     picLoaded() {
-      // setTimeout(() => {
       this.hideReal = false;
       setTimeout(() => {
         // 这里必须使用箭头函数，否则this指向会出问题。
         this.$emit("load");
         this.showPlaceholder = false;
       }, this.duration);
-      // }, 2000);
     },
   },
 };
