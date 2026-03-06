@@ -1,5 +1,5 @@
 <template>
-  <div class="home-container" ref="homeContainer">
+  <div v-loading="isLoading" class="home-container" ref="homeContainer">
     <ul
       class="carousel-container"
       :style="{ marginTop: marginTop }"
@@ -54,6 +54,7 @@ export default {
       containerHeight: 0, // home-container的高度
       debounceMouseWheel: () => {},
       inTransition: false, // 是否正在页面的切换，传递给子组件，用于刷新数据
+      isLoading: true,
     };
   },
   components: {
@@ -68,6 +69,7 @@ export default {
   async created() {
     this.debounceMouseWheel = this.$debounce(this.mouseWheel, 200);
     this.banners = await getBanner();
+    this.isLoading = false;
   },
   mounted() {
     this.handleResize();

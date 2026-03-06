@@ -8,6 +8,9 @@ import { showMessage, debounce } from './utils';
 Vue.prototype.$showMessage = showMessage;
 Vue.prototype.$debounce = debounce;
 
+import vLoading from './directives/loading';
+Vue.directive('loading', vLoading);
+
 new Vue({
   router,
   render: h => h(App),
