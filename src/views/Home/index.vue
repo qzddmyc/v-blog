@@ -45,16 +45,16 @@
 import { getBanner } from "@/api/banner";
 import Icon from "@/components/Icon";
 import CarouselItem from "./Carouselitem";
+import fetchData from "@/mixins/fetchData.js";
 
 export default {
+  mixins: [fetchData("_fetchBanner", [], "banners")],
   data() {
     return {
-      banners: [],
       index: 0, // 当前显示的第几张轮播图，0-based
       containerHeight: 0, // home-container的高度
       debounceMouseWheel: () => {},
       inTransition: false, // 是否正在页面的切换，传递给子组件，用于刷新数据
-      isLoading: true,
     };
   },
   components: {
@@ -66,10 +66,8 @@ export default {
       return -this.index * this.containerHeight + "px";
     },
   },
-  async created() {
+  created() {
     this.debounceMouseWheel = this.$debounce(this.mouseWheel, 200);
-    this.banners = await getBanner();
-    this.isLoading = false;
   },
   mounted() {
     this.handleResize();
@@ -105,6 +103,9 @@ export default {
     handleTransitionEnd(e) {
       if (!this._isTransitionCausedByMarginTop(e)) return;
       this.inTransition = false;
+    },
+    async _fetchBanner() {
+      return await getBanner();
     },
   },
 };
