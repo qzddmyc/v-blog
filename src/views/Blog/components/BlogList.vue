@@ -128,6 +128,7 @@ export default {
           img {
             display: block;
             max-width: @img-max-width;
+            max-height: 250px;
             border-radius: 5px;
           }
         }
