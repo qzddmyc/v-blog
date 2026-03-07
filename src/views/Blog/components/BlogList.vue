@@ -1,32 +1,36 @@
 <template>
-  <div class="blog-list-container" v-loading="isLoading" ref="container">
-    <ul>
-      <li v-for="item in blog.rows" :key="item.id">
-        <div class="thumb" v-if="!!item.thumb">
-          <a href="">
-            <img :src="item.thumb" :alt="item.title" :title="item.title" />
-          </a>
-        </div>
-        <div class="main" :class="{ controlWidth: !!item.thumb }">
-          <h2>
-            <a href="">{{ item.title }}</a>
-          </h2>
-          <div class="aside">
-            <span>日期：{{ formatDate(item.createDate) }}</span>
-            <span>浏览：{{ item.scanNumber }}</span>
-            <span>评论：{{ item.commentNumber }}</span>
-            <a href="/article/cate/8" class="">{{ item.category.name }}</a>
+  <div class="blog-list-container" v-loading="isLoading">
+    <div class="blog-list-container-scroll" ref="container">
+      <ul>
+        <li v-for="item in blog.rows" :key="item.id">
+          <div class="thumb" v-if="!!item.thumb">
+            <a href="">
+              <img :src="item.thumb" :alt="item.title" :title="item.title" />
+            </a>
           </div>
-          <div class="desc">{{ item.description }}</div>
-        </div>
-      </li>
-    </ul>
-    <Pager
-      :current="routerInfo.page"
-      :total="blog.total"
-      :limit="routerInfo.limit"
-      @pageChange="handlePageChange"
-    />
+          <div class="main" :class="{ controlWidth: !!item.thumb }">
+            <h2>
+              <a href="">{{ item.title }}</a>
+            </h2>
+            <div class="aside">
+              <span>日期：{{ formatDate(item.createDate) }}</span>
+              <span>浏览：{{ item.scanNumber }}</span>
+              <span>评论：{{ item.commentNumber }}</span>
+              <a href="/article/cate/8" class="">{{ item.category.name }}</a>
+            </div>
+            <div class="desc">{{ item.description }}</div>
+          </div>
+        </li>
+      </ul>
+      <div class="pager-outer-container">
+        <Pager
+          :current="routerInfo.page"
+          :total="blog.total"
+          :limit="routerInfo.limit"
+          @pageChange="handlePageChange"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -90,60 +94,80 @@ export default {
 <style scoped lang="less">
 @import "~@/styles/var.less";
 .blog-list-container {
-  line-height: 1.7;
-  position: relative;
-  overflow-y: auto;
   width: 100%;
   height: 100%;
-  box-sizing: border-box;
-  scroll-behavior: smooth;
-  ul {
+  overflow: hidden;
+  position: relative;
+  .blog-list-container-scroll {
     @img-max-width: 200px;
     @thumb-margin-right: 15px;
     @main-min-with-with-thumb-exist: 240px;
     @sum: @img-max-width + @thumb-margin-right + @main-min-with-with-thumb-exist;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    min-width: @sum;
-    padding: 20px;
-    padding-top: 10px;
-    li {
-      display: flex;
-      padding: 20px 0;
-      border-bottom: 1px solid @gray;
+    @ul-padding-left-right: 20px;
+    line-height: 1.7;
+    overflow-y: auto;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
       min-width: @sum;
-      .thumb {
-        flex: 0 0 auto;
-        margin-right: @thumb-margin-right;
-        img {
-          display: block;
-          max-width: @img-max-width;
-          border-radius: 5px;
-        }
-      }
-      .main {
-        flex: 1 1 auto;
+      padding: @ul-padding-left-right;
+      padding-top: 10px;
+      li {
+        display: flex;
+        padding: 20px 0;
+        border-bottom: 1px solid @gray;
         min-width: @sum;
-        &.controlWidth {
-          min-width: @main-min-with-with-thumb-exist;
-        }
-        h2 {
-          margin: 0;
-          line-height: 1.4;
-        }
-        .aside {
-          font-size: 12px;
-          color: @gray;
-          margin-top: 5px;
-          span {
-            margin-right: 15px;
+        .thumb {
+          flex: 0 0 auto;
+          margin-right: @thumb-margin-right;
+          img {
+            display: block;
+            max-width: @img-max-width;
+            border-radius: 5px;
           }
         }
-        .desc {
-          margin-top: 15px;
-          font-size: 14px;
+        .main {
+          flex: 1 1 auto;
+          min-width: @sum;
+          &.controlWidth {
+            min-width: @main-min-with-with-thumb-exist;
+          }
+          h2 {
+            margin: 0;
+            line-height: 1.4;
+          }
+          .aside {
+            font-size: 12px;
+            color: @gray;
+            margin-top: 5px;
+            span {
+              margin-right: 15px;
+            }
+          }
+          .desc {
+            margin-top: 15px;
+            font-size: 14px;
+          }
         }
+      }
+    }
+    .pager-outer-container {
+      width: 100%;
+      min-width: @sum;
+      margin: 0 auto;
+      padding-left: @ul-padding-left-right;
+      padding-right: @ul-padding-left-right;
+      box-sizing: border-box;
+      .pager-container {
+        white-space: nowrap;
+        width: fit-content;
+        margin-left: auto;
+        margin-right: auto;
       }
     }
   }
