@@ -48,7 +48,7 @@ import CarouselItem from "./Carouselitem";
 import fetchData from "@/mixins/fetchData.js";
 
 export default {
-  mixins: [fetchData("_fetchBanner", [], "banners")],
+  mixins: [fetchData("getBanner", [], "banners")],
   data() {
     return {
       index: 0, // 当前显示的第几张轮播图，0-based
@@ -78,6 +78,7 @@ export default {
     window.removeEventListener("resize", this.handleResize);
   },
   methods: {
+    getBanner,
     switchTo(idx) {
       if (this.index === idx) return;
       if (idx < 0 || idx >= this.banners.length) return;
@@ -103,9 +104,6 @@ export default {
     handleTransitionEnd(e) {
       if (!this._isTransitionCausedByMarginTop(e)) return;
       this.inTransition = false;
-    },
-    async _fetchBanner() {
-      return await getBanner();
     },
   },
 };

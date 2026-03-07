@@ -1,6 +1,9 @@
 <template>
   <!-- 只有总页数大于等于1时才显示 -->
-  <div class="pager-container" v-if="pageNumber > 1">
+  <div
+    class="pager-container"
+    v-if="pageNumber > 1 && current >= 1 && current <= pageNumber"
+  >
     <a @click="handleClick(1)" :class="{ disabled: current === 1 }"
       >|&lt;&lt;</a
     >

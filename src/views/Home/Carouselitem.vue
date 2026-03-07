@@ -68,7 +68,7 @@ export default {
     window.removeEventListener("resize", this.refreshSize);
   },
   watch: {
-    shouldShowContent(shouldShow, _) {
+    shouldShowContent(shouldShow) {
       if (!this.imgLoaded) return;
       this.timeoutId && clearTimeout(this.timeoutId);
       if (shouldShow) {
