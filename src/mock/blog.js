@@ -4,7 +4,7 @@ import queryString from 'querystring';
 Mock.mock("/api/blogtype", "get", {
   code: 0,
   msg: "",
-  "data|10-20": [
+  "data|10-30": [
     {
       "id|+1": 1,
       name: "分类@id",
@@ -21,7 +21,7 @@ Mock.mock(/^\/api\/blog(\?.+)?$/, "get", function (options) {
     msg: "",
     data: {
       total: 3000,
-      [`rows|${query.limit || 10}`]: [
+      [`rows|${query.limit || 10}-${query.limit || 10}`]: [
         {
           id: "@guid",
           title: "@ctitle(3, 50)",

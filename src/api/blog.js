@@ -12,8 +12,8 @@ async function getBlogs(page = 1, limit = 10, categoryId = -1) {
 }
 
 // 获取博客分类
-async function getBlogTypes() {
+async function getBlogCategories() {
   return await request.get("/api/blogtype");
 }
 
-export { getBlogs, getBlogTypes };
+export { getBlogs, getBlogCategories };
