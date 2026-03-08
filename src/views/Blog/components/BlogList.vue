@@ -105,7 +105,7 @@ export default {
     @sum: @img-max-width + @thumb-margin-right + @main-min-with-with-thumb-exist;
     @ul-padding-left-right: 20px;
     line-height: 1.7;
-    overflow-y: auto;
+    overflow-y: scroll;
     width: 100%;
     height: 100%;
     box-sizing: border-box;
