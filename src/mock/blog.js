@@ -309,7 +309,7 @@ Mock.mock(/^\/api\/comment(\?.+)?$/, "get", function (options) {
           id: "@guid",
           nickname: "@cname",
           content: "@cparagraph(3, 6)",
-          createDate: Date.now(),
+          createDate: () => Number(Mock.mock("@date('T')")),
           blog: {
             id: query.blogid,
             title: "@ctitle(3, 5)",

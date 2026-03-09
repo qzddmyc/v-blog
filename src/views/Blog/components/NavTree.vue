@@ -1,7 +1,7 @@
 <template>
   <ul class="nav-tree-container" v-if="list && list.length !== 0">
     <li v-for="(it, idx) in list" :key="idx">
-      <p @click="handleClick(it)" :class="{ selected: it.isSelected }">
+      <p @click="handleClick(it)" :class="{ selected: !!it.isSelected }">
         <span>{{ it.name }}</span>
         <span v-if="it.aside" class="aside">
           {{ it.aside }}
