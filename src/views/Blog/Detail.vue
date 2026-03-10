@@ -2,7 +2,13 @@
   <Layout>
     <div class="main-container" v-loading="isLoading">
       <div class="main-scroll-container">
-        <BlogDetail v-if="!!article.id" :blog="article" />
+        <div class="blog-container" v-if="!!article.id">
+          <BlogDetail :blog="article" />
+          <Eof />
+        </div>
+        <div class="comment-container">
+          <MessageArea />
+        </div>
       </div>
     </div>
     <template #right>
@@ -17,10 +23,12 @@ import { getBlog } from "@/api/blog";
 import Layout from "@/components/Layout";
 import BlogDetail from "./components/BlogDetail.vue";
 import BlogToc from "./components/BlogToc.vue";
+import Eof from "./components/Eof.vue";
+import MessageArea from "@/components/MessageArea";
 
 export default {
   mixins: [fetchData("_fetchData", { toc: [] }, "article")],
-  components: { Layout, BlogDetail, BlogToc },
+  components: { Layout, BlogDetail, BlogToc, Eof, MessageArea },
   methods: {
     async _fetchData() {
       return await getBlog(this.$route.params.id);
