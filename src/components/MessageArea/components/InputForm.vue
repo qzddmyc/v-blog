@@ -64,13 +64,27 @@ export default {
     handleKeydown(e) {
       if (e.key === "Enter") {
         e.preventDefault();
-        if (this.textareaContent.length < this.textareaLimit) {
-          const el = this.$refs.textarea;
-          const pos = this.getCaretPosition(el);
-          const val = el.innerText;
-          el.innerText = val.substring(0, pos) + " " + val.substring(pos);
-          this.setCaretPosition(el, pos + 1);
-          this.refreshTextAreaContent();
+        const el = this.$refs.textarea;
+        const sel = window.getSelection();
+        if (sel.rangeCount === 0) return;
+        const range = sel.getRangeAt(0);
+        const preRange = range.cloneRange();
+        preRange.selectNodeContents(el);
+        preRange.setEnd(range.startContainer, range.startOffset);
+        const startPos = preRange.toString().length;
+        preRange.setEnd(range.endContainer, range.endOffset);
+        const endPos = preRange.toString().length;
+        const rawText = el.innerText
+          .replace(/\n$/, "")
+          .replace(/[\r\n]+/g, " ");
+        if (rawText.length - (endPos - startPos) + 1 <= this.textareaLimit) {
+          const newText =
+            rawText.substring(0, startPos) + " " + rawText.substring(endPos);
+          this.textareaContent = newText;
+          el.innerText = newText;
+          this.$nextTick(() => {
+            this.setCaretPosition(el, startPos + 1);
+          });
         }
         return;
       }
@@ -108,51 +122,45 @@ export default {
       preRange.setEnd(range.endContainer, range.endOffset);
       const endPos = preRange.toString().length;
       const selectedLength = endPos - startPos;
-      const rawText = el.innerText.replace(/[\r\n]+/g, " ");
+      const rawText = el.innerText.replace(/\n$/, "").replace(/[\r\n]+/g, " ");
       const availableSpace =
-        this.textareaLimit - (rawText.trim().length - selectedLength);
+        this.textareaLimit - (rawText.length - selectedLength);
       if (availableSpace <= 0) return;
       pasteText = pasteText.substring(0, availableSpace);
-      const textBefore = rawText.substring(0, startPos);
-      const textAfter = rawText.substring(endPos);
-      const newRawText = textBefore + pasteText + textAfter;
-      const leadingSpaces = newRawText.length - newRawText.trimStart().length;
-      const text = newRawText.trim();
+      const text =
+        rawText.substring(0, startPos) + pasteText + rawText.substring(endPos);
       this.textareaContent = text;
       if (text === "") {
         el.innerHTML = "";
         this.$nextTick(() => this.setCaretPosition(el, 0));
       } else {
         el.innerText = text;
-        let targetCaretPos = Math.max(
-          0,
-          startPos + pasteText.length - leadingSpaces
-        );
         this.$nextTick(() => {
-          this.setCaretPosition(el, Math.min(targetCaretPos, text.length));
+          this.setCaretPosition(
+            el,
+            Math.min(startPos + pasteText.length, text.length)
+          );
         });
       }
     },
     refreshTextAreaContent() {
       if (this.textareaIsComposing) return;
       const el = this.$refs.textarea;
-      let currentCaretPos = this.getCaretPosition(el);
-      const rawText = el.innerText.replace(/[\r\n]+/g, " ");
-      const leadingSpaces = rawText.length - rawText.trimStart().length;
-      let adjustedCaretPos = Math.max(0, currentCaretPos - leadingSpaces);
-      let text = rawText.trim();
+      let carePos = this.getCaretPosition(el);
+      let text = el.innerText.replace(/\n$/, "").replace(/[\r\n]+/g, " ");
       if (text.length > this.textareaLimit) {
-        const diff = text.length - this.textareaLimit;
-        const removeStart = Math.max(0, adjustedCaretPos - diff);
-        text = text.slice(0, removeStart) + text.slice(adjustedCaretPos);
-        adjustedCaretPos = removeStart;
+        const removeStart = Math.max(
+          0,
+          carePos - (text.length - this.textareaLimit)
+        );
+        text = text.slice(0, removeStart) + text.slice(carePos);
+        carePos = removeStart;
       }
       this.textareaContent = text;
-      if (el.innerText !== text) {
-        el.innerText = text;
-      }
+      if (text === "") el.innerHTML = "";
+      else if (el.innerText !== text) el.innerText = text;
       this.$nextTick(() => {
-        this.setCaretPosition(el, Math.min(adjustedCaretPos, text.length));
+        this.setCaretPosition(el, Math.min(carePos, text.length));
       });
     },
     getCaretPosition(element) {
@@ -195,9 +203,7 @@ export default {
           charIndex = nextCharIndex;
         } else {
           let i = node.childNodes.length;
-          while (i--) {
-            nodeStack.push(node.childNodes[i]);
-          }
+          while (i--) nodeStack.push(node.childNodes[i]);
         }
       }
       if (!stop) {
