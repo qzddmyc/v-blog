@@ -83,7 +83,7 @@ export default {
           this.textareaContent = newText;
           el.innerText = newText;
           this.$nextTick(() => {
-            this.setCaretPosition(el, startPos + 1);
+            this._setCaretPosition(el, startPos + 1);
           });
         }
         return;
@@ -132,11 +132,11 @@ export default {
       this.textareaContent = text;
       if (text === "") {
         el.innerHTML = "";
-        this.$nextTick(() => this.setCaretPosition(el, 0));
+        this.$nextTick(() => this._setCaretPosition(el, 0));
       } else {
         el.innerText = text;
         this.$nextTick(() => {
-          this.setCaretPosition(
+          this._setCaretPosition(
             el,
             Math.min(startPos + pasteText.length, text.length)
           );
@@ -146,7 +146,7 @@ export default {
     refreshTextAreaContent() {
       if (this.textareaIsComposing) return;
       const el = this.$refs.textarea;
-      let carePos = this.getCaretPosition(el);
+      let carePos = this._getCaretPosition(el);
       let text = el.innerText.replace(/\n$/, "").replace(/[\r\n]+/g, " ");
       if (text.length > this.textareaLimit) {
         const removeStart = Math.max(
@@ -160,10 +160,10 @@ export default {
       if (text === "") el.innerHTML = "";
       else if (el.innerText !== text) el.innerText = text;
       this.$nextTick(() => {
-        this.setCaretPosition(el, Math.min(carePos, text.length));
+        this._setCaretPosition(el, Math.min(carePos, text.length));
       });
     },
-    getCaretPosition(element) {
+    _getCaretPosition(element) {
       let caretOffset = 0;
       const doc = element.ownerDocument || element.document;
       const win = doc.defaultView || doc.parentWindow;
@@ -177,7 +177,7 @@ export default {
       }
       return caretOffset;
     },
-    setCaretPosition(element, offset) {
+    _setCaretPosition(element, offset) {
       const range = document.createRange();
       const sel = window.getSelection();
       if (element.childNodes.length === 0 || offset === 0) {
