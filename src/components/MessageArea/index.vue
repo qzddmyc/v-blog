@@ -1,7 +1,7 @@
 <template>
   <div class="message-area-container">
     <InputForm />
-    <DataList />
+    <DataList title="评论列表" subMsg="(100)"/>
     <div class="loading"></div>
   </div>
 </template>

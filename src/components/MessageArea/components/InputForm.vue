@@ -1,5 +1,5 @@
 <template>
-  <form class="input-form-container">
+  <form class="input-form-container" @submit="handleSubmit">
     <div class="item-container text-container">
       <input
         type="text"
@@ -8,7 +8,7 @@
         v-model="inputContent"
       />
       <div class="tips">
-        <div class="error">错误消息</div>
+        <div class="error">{{ inputError }}</div>
         <div class="limit">{{ inputLength }}/{{ inputLimit }}</div>
       </div>
     </div>
@@ -30,9 +30,12 @@
         请输入你的评论内容
       </div>
       <div class="tips">
-        <div class="error">错误消息</div>
+        <div class="error">{{ textareaError }}</div>
         <div class="limit">{{ textareaLength }}/{{ textareaLimit }}</div>
       </div>
+    </div>
+    <div class="button-container">
+      <button>提交</button>
     </div>
   </form>
 </template>
@@ -43,8 +46,10 @@ export default {
     return {
       inputLimit: 10,
       inputContent: "",
+      inputError: "",
       textareaLimit: 300,
       textareaContent: "",
+      textareaError: "",
       textareaIsComposing: false,
     };
   },
@@ -101,7 +106,7 @@ export default {
         return;
       const sel = window.getSelection();
       const hasSelection = sel.rangeCount > 0 && !sel.getRangeAt(0).collapsed;
-      if (this.textareaContent.length >= this.textareaLimit && !hasSelection) {
+      if (this.textareaLength >= this.textareaLimit && !hasSelection) {
         e.preventDefault();
       }
     },
@@ -214,6 +219,9 @@ export default {
       sel.addRange(range);
       element.focus();
     },
+    handleSubmit(e) {
+      e.preventDefault();
+    },
   },
 };
 </script>
@@ -248,9 +256,8 @@ export default {
 .input-form-container {
   width: 100%;
   height: 100%;
+  overflow: hidden;
   .item-container {
-    width: 100%;
-    height: 100%;
     display: flex;
     flex-direction: column;
     margin-bottom: 8px;
@@ -313,8 +320,33 @@ input,
   font-family: inherit;
   font-size: @height;
   transition: border 0.3s;
+  color: @dark;
   &:focus {
     border-color: @primary;
+  }
+}
+
+.button-container {
+  margin-bottom: 8px;
+  button {
+    width: 100px;
+    height: 34px;
+    line-height: 34px;
+    color: #fff;
+    border: none;
+    outline: none;
+    background-color: @primary;
+    border-radius: 4px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: 0.2s;
+    &:hover{
+      background-color: darken(@primary, 10%);
+    }
+    &:disabled{
+      cursor: not-allowed;
+      background-color: lighten(@primary, 20%);
+    }
   }
 }
 </style>
