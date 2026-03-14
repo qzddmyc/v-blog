@@ -1,5 +1,5 @@
 <template>
-  <div class="blog-list-container" v-loading="isLoading">
+  <div class="blog-list-container" v-loading.dots="isLoading">
     <div class="blog-list-container-scroll" ref="container">
       <ul>
         <li v-for="item in blog.rows" :key="item.id">

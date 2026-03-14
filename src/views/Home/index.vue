@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="isLoading" class="home-container" ref="homeContainer">
+  <div v-loading.grid="isLoading" class="home-container" ref="homeContainer">
     <ul
       class="carousel-container"
       :style="{ marginTop: marginTop }"

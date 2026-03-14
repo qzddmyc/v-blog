@@ -1,5 +1,5 @@
 <template>
-  <div class="blog-toc-container" v-loading="!toc.length">
+  <div class="blog-toc-container" v-loading.dots="!toc.length">
     <div class="inner-container" v-show="!!toc.length">
       <h2>目录</h2>
       <div class="nav-tree-fix-container">

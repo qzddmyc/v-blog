@@ -332,7 +332,9 @@ input,
     width: 100px;
     height: 34px;
     line-height: 34px;
+    text-align: center;
     color: #fff;
+    padding: 0;
     border: none;
     outline: none;
     background-color: @primary;

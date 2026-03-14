@@ -1,6 +1,6 @@
 <template>
   <Layout>
-    <div class="main-container" v-loading="isLoading">
+    <div class="main-container" v-loading.dots="isLoading">
       <div class="main-scroll-container">
         <div class="blog-container" v-if="!!article.id">
           <BlogDetail :blog="article" />
