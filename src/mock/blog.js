@@ -287,12 +287,7 @@ Mock.mock("/api/comment", "post", function (options) {
         id: comment.blogId,
         title: "@ctitle(3, 5)",
       },
-      "avatar|1": [
-        "https://api.dicebear.com/9.x/pixel-art/svg?seed=test1",
-        "https://api.dicebear.com/9.x/pixel-art/svg?seed=test7",
-        "https://api.dicebear.com/9.x/pixel-art/svg?seed=test8",
-        "https://api.dicebear.com/9.x/pixel-art/svg?seed=test26",
-      ],
+      avatar: () => "https://api.dicebear.com/9.x/big-smile/svg?skinColor=f5d7b1,efcc9f,e2ba87&seed=qzddmyc" + parseInt(Math.random() * 10000, 10),
     },
   });
 });
@@ -314,12 +309,7 @@ Mock.mock(/^\/api\/comment(\?.+)?$/, "get", function (options) {
             id: query.blogid,
             title: "@ctitle(3, 5)",
           },
-          "avatar|1": [
-            "https://api.dicebear.com/9.x/pixel-art/svg?seed=test1",
-            "https://api.dicebear.com/9.x/pixel-art/svg?seed=test7",
-            "https://api.dicebear.com/9.x/pixel-art/svg?seed=test8",
-            "https://api.dicebear.com/9.x/pixel-art/svg?seed=test26",
-          ],
+          avatar: () => "https://api.dicebear.com/9.x/big-smile/svg?skinColor=f5d7b1,efcc9f,e2ba87&seed=qzddmyc" + parseInt(Math.random() * 10000, 10),
         }],
     },
   });

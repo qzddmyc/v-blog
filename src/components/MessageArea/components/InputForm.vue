@@ -1,5 +1,5 @@
 <template>
-  <form class="input-form-container" @submit="handleSubmit">
+  <form class="input-form-container" @submit.prevent="handleSubmit">
     <div class="item-container text-container">
       <input
         type="text"
@@ -8,7 +8,7 @@
         v-model="inputContent"
       />
       <div class="tips">
-        <div class="error">{{ inputError }}</div>
+        <div class="error">{{ errors.inputError }}</div>
         <div class="limit">{{ inputLength }}/{{ inputLimit }}</div>
       </div>
     </div>
@@ -30,12 +30,14 @@
         请输入你的评论内容
       </div>
       <div class="tips">
-        <div class="error">{{ textareaError }}</div>
+        <div class="error">{{ errors.textareaError }}</div>
         <div class="limit">{{ textareaLength }}/{{ textareaLimit }}</div>
       </div>
     </div>
     <div class="button-container">
-      <button>提交</button>
+      <button :disabled="isSubmitting">
+        {{ isSubmitting ? "提交中..." : "提交" }}
+      </button>
     </div>
   </form>
 </template>
@@ -46,11 +48,14 @@ export default {
     return {
       inputLimit: 10,
       inputContent: "",
-      inputError: "",
       textareaLimit: 300,
       textareaContent: "",
-      textareaError: "",
       textareaIsComposing: false,
+      errors: {
+        inputError: "",
+        textareaError: "",
+      },
+      isSubmitting: false,
     };
   },
   computed: {
@@ -59,6 +64,12 @@ export default {
     },
     textareaLength() {
       return this.textareaContent.length;
+    },
+    formData() {
+      return {
+        nickname: this.inputContent,
+        content: this.textareaContent,
+      };
     },
   },
   methods: {
@@ -219,8 +230,18 @@ export default {
       sel.addRange(range);
       element.focus();
     },
-    handleSubmit(e) {
-      e.preventDefault();
+    _setError(textA = "", textB = "") {
+      this.errors.inputError = textA;
+      this.errors.textareaError = textB;
+    },
+    handleSubmit() {
+      this._setError(
+        this.inputLength ? "" : "请填写昵称",
+        this.textareaLength ? "" : "请填写内容"
+      );
+      if (this.errors.inputError || this.errors.textareaError) return;
+      this.isSubmitting = true;
+      this.$emit("submit", this.formData);
     },
   },
 };
@@ -342,10 +363,10 @@ input,
     font-size: 13px;
     cursor: pointer;
     transition: 0.2s;
-    &:hover{
+    &:hover {
       background-color: darken(@primary, 10%);
     }
-    &:disabled{
+    &:disabled {
       cursor: not-allowed;
       background-color: lighten(@primary, 20%);
     }

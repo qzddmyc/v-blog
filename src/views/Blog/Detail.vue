@@ -3,11 +3,11 @@
     <div class="main-container" v-loading.dots="isLoading">
       <div class="main-scroll-container">
         <div class="blog-container" v-if="!!article.id">
-          <BlogDetail :blog="article" />
+          <!-- <BlogDetail :blog="article" /> -->
           <Eof />
         </div>
-        <div class="comment-container">
-          <MessageArea />
+        <div class="comment-container"  v-if="!isLoading">
+          <BlogComment />
         </div>
       </div>
     </div>
@@ -24,11 +24,11 @@ import Layout from "@/components/Layout";
 import BlogDetail from "./components/BlogDetail.vue";
 import BlogToc from "./components/BlogToc.vue";
 import Eof from "./components/Eof.vue";
-import MessageArea from "@/components/MessageArea";
+import BlogComment from "./components/BlogComment.vue";
 
 export default {
   mixins: [fetchData("_fetchData", { toc: [] }, "article")],
-  components: { Layout, BlogDetail, BlogToc, Eof, MessageArea },
+  components: { Layout, BlogDetail, BlogToc, Eof, BlogComment },
   methods: {
     async _fetchData() {
       return await getBlog(this.$route.params.id);

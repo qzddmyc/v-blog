@@ -2,26 +2,19 @@
   <div class="data-list-container">
     <h3>
       <span class="title">{{ title }}</span>
-      <span class="subMsg">{{ subMsg }}</span>
+      <span class="subTitle">{{ subTitle }}</span>
     </h3>
     <ul>
-      <li
-        class="comment-item"
-        v-for="i in [1, 2, 3, 4, 5, 6, 7, 8, 9]"
-        :key="i"
-      >
+      <li class="comment-item" v-for="comment in comments" :key="comment.id">
         <div class="avatar-outer-container">
-          <Avatar
-            :size="44"
-            url="https://qiheizhiya.oss-cn-shenzhen.aliyuncs.com/image/avatar8.jpg"
-          />
+          <Avatar :size="44" :url="comment.avatar" />
         </div>
         <div class="comment-main">
           <div class="comment-info">
-            <div class="user-name">Nickname</div>
-            <div class="comment-time">2026-03-13 13:22:21</div>
+            <div class="user-name">{{ comment.nickname }}</div>
+            <div class="comment-time">{{ formatDate(comment.createDate, true) }}</div>
           </div>
-          <div class="comment-text">Titanic - Machine Learning from Disaster</div>
+          <div class="comment-text">{{ comment.content }}</div>
         </div>
       </li>
     </ul>
@@ -29,6 +22,7 @@
 </template>
 
 <script>
+import { formatDate } from "@/utils";
 import Avatar from "@/components/Avatar";
 export default {
   props: {
@@ -36,10 +30,17 @@ export default {
       type: String,
       required: true,
     },
-    subMsg: {
+    subTitle: {
       type: String,
-      default: "",
+      required: true,
     },
+    comments: {
+      type: Array,
+      required: true,
+    },
+  },
+  methods: {
+    formatDate,
   },
   components: { Avatar },
 };
@@ -54,7 +55,7 @@ export default {
   h3 {
     margin: 0;
     margin-bottom: 18px;
-    .subMsg {
+    .subTitle {
       margin-left: 5px;
     }
   }
@@ -91,6 +92,7 @@ export default {
           .comment-time {
             color: @gray;
             font-size: 12px;
+            white-space: pre;
           }
         }
         .comment-text {

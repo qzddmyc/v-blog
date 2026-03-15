@@ -1,5 +1,5 @@
 <template>
-  <div class="blog-category-container" v-loading.dots="isLoading">
+  <div class="blog-category-container" v-loading="isLoading">
     <div class="inner-container" v-show="!isLoading">
       <h2>文章分类</h2>
       <div class="nav-tree-fix-container">

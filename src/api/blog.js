@@ -35,7 +35,7 @@ async function postComment(comment) {
 }
 
 
-async function getComment(blogid, page = 1, limit = 10) {
+async function getComments(blogid, page = 1, limit = 10) {
   return await request.get("/api/comment", {
     params: {
       page, limit, blogid,
@@ -43,4 +43,4 @@ async function getComment(blogid, page = 1, limit = 10) {
   })
 }
 
-export { getBlogs, getBlogCategories, getBlog, postComment, getComment };
+export { getBlogs, getBlogCategories, getBlog, postComment, getComments };
