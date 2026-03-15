@@ -1,5 +1,5 @@
 <template>
-  <form class="input-form-container" @submit.prevent="handleSubmit">
+  <form class="input-form-container" @submit.prevent="handleSubmit" ref="form">
     <div class="item-container text-container">
       <input
         type="text"
@@ -36,7 +36,7 @@
     </div>
     <div class="button-container">
       <button :disabled="isSubmitting">
-        {{ isSubmitting ? "提交中..." : "提交" }}
+        {{ isSubmitting ? buttonText : "提交" }}
       </button>
     </div>
   </form>
@@ -49,13 +49,14 @@ export default {
       inputLimit: 10,
       inputContent: "",
       textareaLimit: 300,
-      textareaContent: "",
+      textareaContent: "", // 注意该数据并没有实现响应式，修改的同时需要修改节点中的文本
       textareaIsComposing: false,
       errors: {
         inputError: "",
         textareaError: "",
       },
       isSubmitting: false,
+      buttonText: "提交中...",
     };
   },
   computed: {
@@ -241,8 +242,25 @@ export default {
       );
       if (this.errors.inputError || this.errors.textareaError) return;
       this.isSubmitting = true;
-      this.$emit("submit", this.formData);
+      this.$emit("submit", this.formData, (info) => {
+        this.inputContent = "";
+        this.textareaContent = "";
+        this.$refs.textarea.innerHTML = "";
+        this.buttonText = "已提交";
+        this.$showMessage({
+          duration: 1000,
+          container: this.$refs.form,
+          feedback: () => {
+            this.isSubmitting = false;
+            this.buttonText = "提交中...";
+          },
+          ...info,
+        });
+      });
     },
+  },
+  mounted() {
+    this.$refs.textarea.innerHTML = "";
   },
 };
 </script>

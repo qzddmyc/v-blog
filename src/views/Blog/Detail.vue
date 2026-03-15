@@ -3,7 +3,7 @@
     <div class="main-container" v-loading.dots="isLoading">
       <div class="main-scroll-container">
         <div class="blog-container" v-if="!!article.id">
-          <!-- <BlogDetail :blog="article" /> -->
+          <BlogDetail :blog="article" />
           <Eof />
         </div>
         <div class="comment-container"  v-if="!isLoading">

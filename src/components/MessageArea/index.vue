@@ -1,8 +1,13 @@
 <template>
-  <div class="message-area-container">
-    <InputForm />
+  <div class="message-area-container" id="comments">
+    <div class="fake-margin-top"></div>
+    <InputForm v-on="$listeners" />
     <DataList :title="title" :subTitle="subTitle" :comments="commentList" />
-    <div class="loading" v-loading.domino="isListLoading" v-show="isListLoading"></div>
+    <div
+      class="loading"
+      v-loading.domino="isListLoading"
+      v-show="isListLoading"
+    ></div>
   </div>
 </template>
 
@@ -34,9 +39,12 @@ export default {
 
 <style lang="less" scoped>
 .message-area-container {
-  margin-top: 50px;
   margin-bottom: 30px;
-  .loading{
+  .fake-margin-top {
+    height: 50px;
+    width: 100%;
+  }
+  .loading {
     height: 50px;
     width: 100%;
     position: relative;

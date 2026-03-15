@@ -5,7 +5,7 @@
       <span>日期：{{ formatDate(blog.createDate) }}</span>
       <span>浏览次数：{{ blog.scanNumber }}</span>
       <span>
-        <a href="#">评论数量：{{ blog.commentNumber }}</a>
+        <a href="#comments">评论数量：{{ blog.commentNumber }}</a>
       </span>
       <span>
         <a href="#">{{ blog.category.name }}</a>
