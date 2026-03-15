@@ -51,7 +51,10 @@ export default {
   },
   updated() {
     const hash = this.$route.hash;
-    hash && this.scrollToHash(hash);
+    if (!hash) return;
+    setTimeout(() => {
+      this.scrollToHash(hash);
+    }, 50);
   },
   beforeDestroy() {
     this.$refs.scrollContainer.removeEventListener("scroll", this.handleScroll);
