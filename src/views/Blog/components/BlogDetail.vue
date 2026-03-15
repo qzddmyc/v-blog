@@ -5,10 +5,20 @@
       <span>日期：{{ formatDate(blog.createDate) }}</span>
       <span>浏览次数：{{ blog.scanNumber }}</span>
       <span>
-        <a href="#comments">评论数量：{{ blog.commentNumber }}</a>
+        <RouterLink :to="{ hash: '#comments' }"
+          >评论数量：{{ blog.commentNumber }}</RouterLink
+        >
       </span>
       <span>
-        <a href="#">{{ blog.category.name }}</a>
+        <RouterLink
+          :to="{
+            name: 'CategoryBlog',
+            params: {
+              categoryId: blog.category.id,
+            },
+          }"
+          >{{ blog.category.name }}</RouterLink
+        >
       </span>
     </aside>
     <div class="content-container">

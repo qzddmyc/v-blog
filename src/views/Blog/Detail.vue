@@ -1,12 +1,12 @@
 <template>
   <Layout>
     <div class="main-container" v-loading.dots="isLoading">
-      <div class="main-scroll-container">
+      <div class="main-scroll-container" ref="scrollContainer">
         <div class="blog-container" v-if="!!article.id">
           <BlogDetail :blog="article" />
           <Eof />
         </div>
-        <div class="comment-container"  v-if="!isLoading">
+        <div class="comment-container" v-if="!isLoading">
           <BlogComment />
         </div>
       </div>
@@ -32,6 +32,39 @@ export default {
   methods: {
     async _fetchData() {
       return await getBlog(this.$route.params.id);
+    },
+    handleScroll() {
+      this.$bus.$emit("mainScroll", this.$refs.scrollContainer);
+    },
+    scrollToHash(hash) {
+      // hash 以 # 开头;
+      const dom = document.getElementById(hash.slice(1));
+      if (!dom) return;
+      dom.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    },
+  },
+  mounted() {
+    this.$refs.scrollContainer.addEventListener("scroll", this.handleScroll);
+  },
+  updated() {
+    const hash = this.$route.hash;
+    hash && this.scrollToHash(hash);
+  },
+  beforeDestroy() {
+    this.$refs.scrollContainer.removeEventListener("scroll", this.handleScroll);
+  },
+  watch: {
+    "$route.hash": {
+      handler(newHash) {
+        if (!newHash) return;
+        this.$nextTick(() => {
+          this.scrollToHash(newHash);
+        });
+      },
+      immediate: false,
     },
   },
 };

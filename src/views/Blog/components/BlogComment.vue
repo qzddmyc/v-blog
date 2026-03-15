@@ -28,7 +28,6 @@ export default {
       return await getComments(this.$route.params.id, this.page++, this.limit);
     },
     async handleSubmit(formData, callback) {
-      console.log(formData);
       const resp = await postComment({
         blogId: this.$route.params.id,
         ...formData,

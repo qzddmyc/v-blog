@@ -30,9 +30,9 @@
   position: absolute;
   width: 100%;
   height: 100%;
-  --delay: calc(var(--index) * 0.1s);
+  --delay: calc(var(--index) * 0.09s);
   animation: orbit7456 ease-in-out 1.5s var(--delay) infinite;
-  opacity: calc(1 - calc(0.2 * var(--index)));
+  opacity: calc(1 - calc(0.15 * var(--index)));
 }
 
 .orbe::after {
@@ -69,6 +69,7 @@
         <div class="orbe" style="--index: 2"></div>
         <div class="orbe" style="--index: 3"></div>
         <div class="orbe" style="--index: 4"></div>
+        <div class="orbe" style="--index: 5"></div>
       </div>
     </div>
   </div>
