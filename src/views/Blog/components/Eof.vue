@@ -59,6 +59,7 @@ export default {
     color: darken(@gray, 20%);
     background-color: @bacc;
     padding: 0 8px;
+    letter-spacing: 2px;
   }
 }
 </style>
