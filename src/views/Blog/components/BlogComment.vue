@@ -32,6 +32,9 @@ export default {
   created() {
     this.$bus.$on("mainScroll", this.handleScroll);
   },
+  beforeDestroy() {
+    this.$bus.$off("mainScroll", this.handleScroll);
+  },
   methods: {
     handleScroll(dom) {
       if (this.isLoading) return;
