@@ -6,7 +6,7 @@
     <div
       class="loading"
       v-loading.domino="isListLoading"
-      v-show="isListLoading"
+      v-show="!isCommentsAllLoaded"
     ></div>
   </div>
 </template>
@@ -33,6 +33,10 @@ export default {
       type: Boolean,
       required: true,
     },
+    isCommentsAllLoaded: {
+      type: Boolean,
+      required: true,
+    },
   },
 };
 </script>
@@ -47,6 +51,7 @@ export default {
   .loading {
     height: 50px;
     width: 100%;
+    margin-top: 30px;
     position: relative;
   }
 }

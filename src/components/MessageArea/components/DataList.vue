@@ -50,7 +50,7 @@ export default {
 @import "~@/styles/var.less";
 .data-list-container {
   width: 100%;
-  margin: 50px 0;
+  margin-top: 50px;
   overflow: hidden;
   h3 {
     margin: 0;

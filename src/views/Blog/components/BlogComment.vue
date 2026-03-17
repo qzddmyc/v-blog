@@ -5,6 +5,7 @@
       title="评论列表"
       :subTitle="`(${commentData.total})`"
       :isListLoading="isLoading"
+      :isCommentsAllLoaded="isEndOfComment"
       @submit="handleSubmit"
     />
   </div>
@@ -23,9 +24,35 @@ export default {
       limit: 10,
     };
   },
+  computed: {
+    isEndOfComment() {
+      return this.commentData.rows.length >= this.commentData.total;
+    },
+  },
+  created() {
+    this.$bus.$on("mainScroll", this.handleScroll);
+  },
   methods: {
+    handleScroll(dom) {
+      if (this.isLoading) return;
+      const range = 90;
+      if (dom.scrollHeight - dom.scrollTop - dom.clientHeight > range) return;
+      this._fetchMore();
+    },
     async _fetchData() {
       return await getComments(this.$route.params.id, this.page++, this.limit);
+    },
+    async _fetchMore() {
+      if (this.isEndOfComment) return;
+      this.isLoading = true;
+      const next = await getComments(
+        this.$route.params.id,
+        this.page++,
+        this.limit
+      );
+      this.commentData.total = next.total;
+      this.commentData.rows = this.commentData.rows.concat(next.rows);
+      this.isLoading = false;
     },
     async handleSubmit(formData, callback) {
       const resp = await postComment({
