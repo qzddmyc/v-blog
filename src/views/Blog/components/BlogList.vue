@@ -60,8 +60,13 @@ import Pager from "@/components/Pager";
 import fetchData from "@/mixins/fetchData";
 import { getBlogs } from "@/api/blog";
 import { formatDate } from "@/utils";
+import mainScroll from "@/mixins/mainScroll";
+
 export default {
-  mixins: [fetchData("_fetchData", { rows: [] }, "blog")],
+  mixins: [
+    fetchData("_fetchData", { rows: [] }, "blog"),
+    mainScroll("container"),
+  ],
   components: { Pager },
   computed: {
     routerInfo() {
@@ -70,15 +75,6 @@ export default {
       const limit = +this.$route.query.limit || 10;
       return { categoryId, page, limit };
     },
-  },
-  mounted() {
-    this.$refs.container.addEventListener("scroll", this.handleScroll);
-    this.$bus.$on("setScroll", this.setScroll);
-  },
-  beforeDestroy() {
-    this.$refs.container.removeEventListener("scroll", this.handleScroll);
-    this.$bus.$emit("mainScroll", null);
-    this.$bus.$off("setScroll", this.setScroll);
   },
   methods: {
     formatDate,
@@ -108,12 +104,6 @@ export default {
           },
         });
       }
-    },
-    handleScroll() {
-      this.$bus.$emit("mainScroll", this.$refs.container);
-    },
-    setScroll(n) {
-      this.$refs.container.scrollTop = n;
     },
   },
   watch: {
