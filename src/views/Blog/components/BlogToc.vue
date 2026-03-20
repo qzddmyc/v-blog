@@ -42,10 +42,21 @@ export default {
   },
   methods: {
     handleSelect(tar) {
-      if (this.$route.hash !== tar.anchor) {
+      if (this.$route.hash !== `#${tar.anchor}`) {
         this.$router.push({
           path: this.$route.path,
           hash: tar.anchor,
+        });
+      } else {
+        if (tar.isSelected) return;
+        this.$router.push({
+          path: this.$route.path,
+        });
+        Promise.resolve().then(() => {
+          this.$router.push({
+            path: this.$route.path,
+            hash: tar.anchor,
+          });
         });
       }
     },
@@ -70,7 +81,8 @@ export default {
         !!this.commentDom && this.commentDom.getBoundingClientRect().top <= 40
       );
     },
-    setSelect() {
+    setSelect(d) {
+      if (!d) return;
       this.selectedAnchor = "";
       if (this._queryCommentDomAndCheckHeight()) return;
       const threshold = 80;

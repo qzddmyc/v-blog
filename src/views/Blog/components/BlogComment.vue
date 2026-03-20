@@ -37,7 +37,7 @@ export default {
   },
   methods: {
     handleScroll(dom) {
-      if (this.isLoading) return;
+      if (this.isLoading || !dom) return;
       const range = 90;
       if (dom.scrollHeight - dom.scrollTop - dom.clientHeight > range) return;
       this._fetchMore();

@@ -38,6 +38,10 @@ export default {
     },
     scrollToHash(hash) {
       // hash 以 # 开头;
+      if (hash === "#") {
+        this.$refs.scrollContainer.scrollTop = 0;
+        return;
+      }
       const dom = document.getElementById(hash.slice(1));
       if (!dom) return;
       dom.scrollIntoView({
@@ -45,9 +49,14 @@ export default {
         block: "start",
       });
     },
+    setScroll(n) {
+      if (n !== 0) return;
+      this.scrollToHash("#");
+    },
   },
   mounted() {
     this.$refs.scrollContainer.addEventListener("scroll", this.handleScroll);
+    this.$bus.$on("setScroll", this.setScroll);
   },
   updated() {
     const hash = this.$route.hash;
@@ -58,6 +67,8 @@ export default {
   },
   beforeDestroy() {
     this.$refs.scrollContainer.removeEventListener("scroll", this.handleScroll);
+    this.$bus.$emit("mainScroll", null);
+    this.$bus.$off("setScroll", this.setScroll);
   },
   watch: {
     "$route.hash": {

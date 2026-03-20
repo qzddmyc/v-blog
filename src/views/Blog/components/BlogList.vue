@@ -71,6 +71,15 @@ export default {
       return { categoryId, page, limit };
     },
   },
+  mounted() {
+    this.$refs.container.addEventListener("scroll", this.handleScroll);
+    this.$bus.$on("setScroll", this.setScroll);
+  },
+  beforeDestroy() {
+    this.$refs.container.removeEventListener("scroll", this.handleScroll);
+    this.$bus.$emit("mainScroll", null);
+    this.$bus.$off("setScroll", this.setScroll);
+  },
   methods: {
     formatDate,
     async _fetchData() {
@@ -99,6 +108,12 @@ export default {
           },
         });
       }
+    },
+    handleScroll() {
+      this.$bus.$emit("mainScroll", this.$refs.container);
+    },
+    setScroll(n) {
+      this.$refs.container.scrollTop = n;
     },
   },
   watch: {
