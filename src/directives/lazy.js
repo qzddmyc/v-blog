@@ -27,11 +27,11 @@ function handleScroll() {
 eventBus.$on("mainScroll", debounce(handleScroll, 50));
 
 export default {
-  inserted(el, bingding) {
+  inserted(el, binding) {
     const _obj = {
       dom: el,
-      src: bingding.value.src,
-      locationNode: new Array(bingding.value.relation).fill(0).reduce((node) => node?.parentElement, el),
+      src: binding.value.src,
+      locationNode: Array.from({ length: binding.value.relation }).reduce((node) => node?.parentElement, el),
     };
     imgs.push(_obj);
     setImage(_obj);
