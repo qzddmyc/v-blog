@@ -57,6 +57,7 @@ export default {
   cursor: pointer;
   user-select: none;
   transition: 0.3s linear;
+  font-size: 15px;
   &.hide {
     bottom: -@gap * 2;
   }
