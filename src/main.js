@@ -10,7 +10,9 @@ Vue.prototype.$showMessage = showMessage;
 Vue.prototype.$debounce = debounce;
 
 import vLoading from './directives/loading';
+import vLazy from './directives/lazy';
 Vue.directive('loading', vLoading);
+Vue.directive('lazy', vLazy);
 
 new Vue({
   router,

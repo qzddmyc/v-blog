@@ -1,5 +1,5 @@
 // const listeners = {};
-
+// 
 // // 事件总线
 // export default {
 //   // 监听事件
@@ -31,4 +31,7 @@ import Vue from "vue";
  *  - 触发者为 @/components/ToTop/index.vue
  *  - 参数为需要设定的高度，Number 类型
  */
-Vue.prototype.$bus = new Vue({});
+const _eventBus = new Vue({});
+Vue.prototype.$bus = _eventBus;
+
+export default _eventBus;

@@ -10,7 +10,11 @@
                 params: { id: item.id },
               }"
             >
-              <img :src="item.thumb" :alt="item.title" :title="item.title" />
+              <img
+                v-lazy="{ src: item.thumb, relation: 3 }"
+                :alt="item.title"
+                :title="item.title"
+              />
             </RouterLink>
           </div>
           <div class="main" :class="{ controlWidth: !!item.thumb }">
