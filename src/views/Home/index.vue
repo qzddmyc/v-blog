@@ -42,13 +42,11 @@
 </template>
 
 <script>
-import { getBanner } from "@/api/banner";
+import { mapState } from "vuex";
 import Icon from "@/components/Icon";
 import CarouselItem from "./Carouselitem";
-import fetchData from "@/mixins/fetchData.js";
 
 export default {
-  mixins: [fetchData("getBanner", [], "banners")],
   data() {
     return {
       index: 0, // 当前显示的第几张轮播图，0-based
@@ -65,9 +63,11 @@ export default {
     marginTop() {
       return -this.index * this.containerHeight + "px";
     },
+    ...mapState("banner", ["isLoading", "banners"]),
   },
   created() {
     this.debounceMouseWheel = this.$debounce(this.mouseWheel, 200);
+    this.$store.dispatch("banner/fetchBanner");
   },
   mounted() {
     this.handleResize();
@@ -78,7 +78,6 @@ export default {
     window.removeEventListener("resize", this.handleResize);
   },
   methods: {
-    getBanner,
     switchTo(idx) {
       if (this.index === idx) return;
       if (idx < 0 || idx >= this.banners.length) return;

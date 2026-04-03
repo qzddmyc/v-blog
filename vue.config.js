@@ -5,7 +5,14 @@ module.exports = {
     proxy: {
       "/api": {
         target: "https://luxmeth.cn",
+        changeOrigin: true,
       }
     }
+  },
+  chainWebpack: config => {
+    config.module
+      .rule('images')
+      .test(/\.(png|jpe?g|gif|webp|ico)(\?.*)?$/)
+      .end();
   }
 };

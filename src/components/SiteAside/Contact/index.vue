@@ -1,12 +1,12 @@
 <template>
   <div class="contact-container">
-    <a :href="item.ref" v-for="(item, idx) in info" :key="idx" target="_blank">
+    <a :href="item.ref || ''" v-for="(item, idx) in info" :key="idx" target="_blank">
       <Icon
         :type="item.iconType"
         :class="{ weixin: item.iconType === 'weixin' }"
       />
       <span>
-        {{ item.txt }}
+        {{ item.txt || '' }}
         <div v-if="!!item.qrCode" class="qrcode">
           <img :src="item.qrCode" />
         </div>
@@ -16,41 +16,41 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import Icon from "@/components/Icon";
-import qrCode_qq from "@/img/qrcode-qq.png";
-import qrCode_vx from "@/img/qrcode-vx.png";
 
 export default {
   components: { Icon },
-  data() {
-    return {
-      info: [
+  computed: {
+    ...mapState("setting", ["data"]),
+    info() {
+      return [
         {
-          ref: "//github/qzddmyc",
+          ref: this.data.github,
           iconType: "github",
-          txt: "qzddmyc",
+          txt: this.data.githubName,
           qrCode: null,
         },
         {
-          ref: "mailto:qzddmyc@163.com",
+          ref: `mailto:${this.data.mail}`,
           iconType: "mail",
-          txt: "qzddmyc@163.com",
+          txt: this.data.mail,
           qrCode: null,
         },
         {
           ref: "//qq.com",
           iconType: "qq",
-          txt: "3241982429",
-          qrCode: qrCode_qq,
+          txt: this.data.qq,
+          qrCode: this.data.qqQrCode,
         },
         {
           ref: null,
           iconType: "weixin",
-          txt: "Methry-qzddmyc",
-          qrCode: qrCode_vx,
+          txt: this.data.weixin,
+          qrCode: this.data.weixinQrCode,
         },
-      ],
-    };
+      ];
+    },
   },
 };
 </script>

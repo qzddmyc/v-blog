@@ -1,40 +1,47 @@
 <template>
-  <div class="site-aside-container">
-    <div class="avatar">
-      <Avatar :url="catImg" />
+  <div class="site-aside-container" v-loading.drop="loading">
+    <div class="avatar" :class="{ opacity0: loading }">
+      <Avatar :url="data.avatar || ''" />
     </div>
-    <div class="menu">
+    <div class="menu" :class="{ opacity0: loading }">
       <Menu />
     </div>
-    <div class="contact">
+    <div class="contact" :class="{ opacity0: loading }">
       <Contact />
     </div>
-    <footer class="footer">
-      <a href="/">苏ICP备2025181248号</a>
+    <footer class="footer" :class="{ opacity0: loading }">
+      <a
+        href="https://beian.miit.gov.cn"
+        target="_blank"
+        rel="noopener noreferrer"
+        >{{ data.icp || " " }}</a
+      >
     </footer>
   </div>
 </template>
 
 <script>
+import { mapState } from "vuex";
 import Avatar from "@/components/Avatar";
 import Menu from "./Menu";
 import Contact from "./Contact";
-import catImg from "@/img/cat.jpeg";
 export default {
-  data() {
-    return { catImg };
-  },
   components: {
     Avatar,
     Menu,
     Contact,
   },
+  computed: mapState("setting", ["data", "loading"]),
 };
 </script>
 
 <style scoped lang="less">
 @import "~@/styles/global.less";
 @import "~@/styles/var.less";
+
+.opacity0 {
+  opacity: 0;
+}
 
 .site-aside-container {
   width: 100%;
@@ -46,6 +53,7 @@ export default {
   background: @dark;
   overflow-x: hidden;
   overflow-y: auto;
+  position: relative;
   .avatar {
     width: 100%;
     margin-top: 40px;
