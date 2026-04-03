@@ -5,6 +5,7 @@ import "./styles/global.less";
 import router from './router';
 import store from "./store";
 import './eventBus';
+import { titleController } from './utils';
 
 import { showMessage, debounce } from './utils';
 Vue.prototype.$showMessage = showMessage;
@@ -15,6 +16,7 @@ import vLazy from './directives/lazy';
 Vue.directive('loading', vLoading);
 Vue.directive('lazy', vLazy);
 
+titleController.init();
 store.dispatch("setting/fetchSetting");
 
 new Vue({

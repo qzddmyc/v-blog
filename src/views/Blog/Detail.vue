@@ -26,6 +26,7 @@ import BlogToc from "./components/BlogToc.vue";
 import Eof from "./components/Eof.vue";
 import BlogComment from "./components/BlogComment.vue";
 import mainScroll from "@/mixins/mainScroll";
+import { titleController } from "@/utils";
 
 export default {
   mixins: [
@@ -35,10 +36,13 @@ export default {
   components: { Layout, BlogDetail, BlogToc, Eof, BlogComment },
   methods: {
     async _fetchData() {
-      return await getBlog(this.$route.params.id);
+      const resp = await getBlog(this.$route.params.id);
+      resp.title && titleController.setRouterTitle(resp.title);
+      return resp;
     },
     scrollToHash(hash) {
       // hash 以 # 开头;
+      this.article.title && titleController.setRouterTitle(this.article.title);
       const dom = document.getElementById(hash.slice(1));
       if (!dom) return;
       dom.scrollIntoView({

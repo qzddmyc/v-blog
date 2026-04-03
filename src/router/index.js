@@ -1,12 +1,17 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import routes from './routes';
+import { titleController } from '@/utils';
 
 Vue.use(VueRouter);
 
 const router = new VueRouter({
   routes,
   mode: "history",
+});
+
+router.afterEach((to) => {
+  to.meta.title && titleController.setRouterTitle(to.meta.title);
 });
 
 export default router;
