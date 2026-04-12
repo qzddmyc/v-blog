@@ -25,7 +25,7 @@ import Vue from "vue";
 
 /**
  * mainScroll: 主区域滚动时触发
- *  - 触发者为 @/views/Blog/Detail.vue 与 @/views/Blog/components/BlogList.vue
+ *  - 触发者：使用 grep @/mixins/mainScroll -r ./src/ 查询
  *  - 参数为触发滚动的 DOM 元素；会在该元素被销毁前，使用 null 进行一次事件触发
  * setScroll: 需要设置滚动区域的滚动高度时触发
  *  - 触发者为 @/components/ToTop/index.vue
