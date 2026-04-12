@@ -3,8 +3,6 @@ import queryString from "querystring";
 
 Mock.mock("/api/message", "post", function (options) {
   const message = JSON.parse(options.body);
-  console.log(options);
-  console.log(message);
   return Mock.mock({
     code: 0,
     msg: "",
@@ -24,7 +22,7 @@ Mock.mock(/^\/api\/message\/?(\?.+)?$/, "get", function (options) {
     code: 0,
     msg: "",
     data: {
-      total: 52,
+      total: 50,
       [`rows|${query.limit || 10}-${query.limit || 10}`]: [
         {
           id: "@guid",

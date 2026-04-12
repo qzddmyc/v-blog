@@ -49,12 +49,9 @@ export default {
     async _fetchMore() {
       if (this.isEndOfComment) return;
       this.isLoading = true;
-      const next = await getComments(
-        this.$route.params.id,
-        this.page++,
-        this.limit
-      );
-      this.commentData.total = next.total;
+      const next = await this._fetchData();
+      next.total > this.commentData.total &&
+        (this.commentData.total = next.total);
       this.commentData.rows = this.commentData.rows.concat(next.rows);
       this.isLoading = false;
     },
