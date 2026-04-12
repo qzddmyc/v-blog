@@ -43,6 +43,7 @@ export default {
     scrollToHash(hash) {
       // hash 以 # 开头;
       this.article.title && titleController.setRouterTitle(this.article.title);
+      if (!hash) return;
       const dom = document.getElementById(hash.slice(1));
       if (!dom) return;
       dom.scrollIntoView({
@@ -61,10 +62,7 @@ export default {
   watch: {
     "$route.hash": {
       handler(newHash) {
-        if (!newHash) return;
-        this.$nextTick(() => {
-          this.scrollToHash(newHash);
-        });
+        this.scrollToHash(newHash);
       },
       immediate: false,
     },

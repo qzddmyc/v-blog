@@ -1,5 +1,6 @@
 <template>
-  <div class="blog-comment-container">
+  <div class="blog-comment-container" id="comments">
+    <div class="fake-margin-top"></div>
     <MessageArea
       :commentList="commentData.rows"
       title="评论列表"
@@ -76,4 +77,8 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.fake-margin-top {
+  height: 50px;
+  width: 100%;
+}
 </style>

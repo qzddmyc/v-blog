@@ -1,6 +1,5 @@
 <template>
-  <div class="message-area-container" id="comments">
-    <div class="fake-margin-top"></div>
+  <div class="message-area-container">
     <InputForm v-on="$listeners" />
     <DataList :title="title" :subTitle="subTitle" :comments="commentList" />
     <div
@@ -44,10 +43,6 @@ export default {
 <style lang="less" scoped>
 .message-area-container {
   margin-bottom: 30px;
-  .fake-margin-top {
-    height: 50px;
-    width: 100%;
-  }
   .loading {
     height: 50px;
     width: 100%;
