@@ -11,6 +11,7 @@
       :isListLoading="!isInitLoading && isLoading"
       :isCommentsAllLoaded="isMessagesAllLoaded"
       :commentList="messageData.rows"
+      textareaPlaceholder="留言"
       @submit="handleSubmit"
     />
   </div>

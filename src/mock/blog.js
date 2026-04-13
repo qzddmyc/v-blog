@@ -26,9 +26,10 @@ Mock.mock(/^\/api\/blog(\?.+)?$/, "get", function (options) {
           id: "@guid",
           title: "@ctitle(3, 50)",
           description: "@cparagraph(3, 10)",
-          category: {
-            "id|1-10": 0,
-            name: "分类@id",
+          category: () => {
+            if (!query.categoryid || query.categoryid.toString() === "-1")
+              return Mock.mock({ "id|1-10": 0, name: "分类@id" });
+            return Mock.mock({ id: query.categoryid, name: "分类@id" });
           },
           "scanNumber|0-3000": 0,
           "commentNumber|0-300": 0,

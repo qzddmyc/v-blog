@@ -27,7 +27,9 @@
         class="placeholder"
         v-show="!textareaIsComposing && textareaLength === 0"
       >
-        请输入你的评论内容
+        {{
+          `请输入${textareaPlaceholder ? "你的" + textareaPlaceholder : ""}内容`
+        }}
       </div>
       <div class="tips">
         <div class="error">{{ errors.textareaError }}</div>
@@ -58,6 +60,12 @@ export default {
       isSubmitting: false,
       buttonText: "提交中...",
     };
+  },
+  props: {
+    textareaPlaceholder: {
+      type: String,
+      default: "",
+    },
   },
   computed: {
     inputLength() {

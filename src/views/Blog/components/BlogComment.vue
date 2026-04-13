@@ -7,6 +7,7 @@
       :subTitle="`(${commentData.total})`"
       :isListLoading="isLoading"
       :isCommentsAllLoaded="isEndOfComment"
+      textareaPlaceholder="评论"
       @submit="handleSubmit"
     />
   </div>

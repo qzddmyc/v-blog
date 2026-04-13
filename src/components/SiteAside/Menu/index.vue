@@ -11,6 +11,7 @@
           :exact="!item.notExact"
           active-class="selected"
           exact-active-class=""
+          tabindex="-1"
         >
           <Icon :type="item.icon" />
           <span>{{ item.span }}</span>

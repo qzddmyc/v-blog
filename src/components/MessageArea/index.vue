@@ -1,6 +1,6 @@
 <template>
   <div class="message-area-container">
-    <InputForm v-on="$listeners" />
+    <InputForm v-on="$listeners" :textareaPlaceholder="textareaPlaceholder" />
     <DataList :title="title" :subTitle="subTitle" :comments="commentList" />
     <div
       class="loading"
@@ -35,6 +35,9 @@ export default {
     isCommentsAllLoaded: {
       type: Boolean,
       required: true,
+    },
+    textareaPlaceholder: {
+      type: String,
     },
   },
 };

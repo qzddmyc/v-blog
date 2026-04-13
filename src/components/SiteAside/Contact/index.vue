@@ -1,12 +1,18 @@
 <template>
   <div class="contact-container">
-    <a :href="item.ref || ''" v-for="(item, idx) in info" :key="idx" target="_blank">
+    <a
+      :href="item.ref || ''"
+      v-for="(item, idx) in info"
+      :key="idx"
+      tabindex="-1"
+      target="_blank"
+    >
       <Icon
         :type="item.iconType"
         :class="{ weixin: item.iconType === 'weixin' }"
       />
       <span>
-        {{ item.txt || '' }}
+        {{ item.txt || "" }}
         <div v-if="!!item.qrCode" class="qrcode">
           <img :src="item.qrCode" />
         </div>
