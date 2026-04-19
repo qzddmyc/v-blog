@@ -14,5 +14,6 @@ module.exports = {
       .rule('images')
       .test(/\.(png|jpe?g|gif|webp|ico)(\?.*)?$/)
       .end();
-  }
+  },
+  configureWebpack: require("./webpack.config"),
 };

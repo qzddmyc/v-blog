@@ -1,18 +1,48 @@
-import About from "@/views/About";
-import Blog from "@/views/Blog";
-import Home from "@/views/Home";
-import Message from "@/views/Message";
-import Project from "@/views/Project";
-import BlogDetail from "@/views/Blog/Detail";
+// 使用路由懒加载
 
 const routes = [
-  { name: "Home", path: "/", component: Home, meta: { title: "首页" } },
-  { name: "About", path: "/about", component: About, meta: { title: "关于我" } },
-  { name: "Blog", path: "/blog", component: Blog, meta: { title: "文章" } },
-  { name: "CategoryBlog", path: "/blog/cate/:categoryId", component: Blog, meta: { title: "文章" } },
-  { name: "BlogDetail", path: "/blog/article/:id", component: BlogDetail, meta: { title: "文章详情" } },
-  { name: "Message", path: "/message", component: Message, meta: { title: "留言板" } },
-  { name: "Project", path: "/project", component: Project, meta: { title: "我的项目" } },
+  {
+    name: "Home",
+    path: "/",
+    component: () => import(/* webpackChunkName: "home" */ "@/views/Home"),
+    meta: { title: "首页" }
+  },
+  {
+    name: "About",
+    path: "/about",
+    component: () => import(/* webpackChunkName: "about" */ "@/views/About"),
+    meta: { title: "关于我" }
+  },
+  {
+    name: "Blog",
+    path: "/blog",
+    component: () => import(/* webpackChunkName: "blog" */ "@/views/Blog"),
+    meta: { title: "文章" }
+  },
+  {
+    name: "CategoryBlog",
+    path: "/blog/cate/:categoryId",
+    component: () => import(/* webpackChunkName: "blog" */ "@/views/Blog"),
+    meta: { title: "文章" }
+  },
+  {
+    name: "BlogDetail",
+    path: "/blog/article/:id",
+    component: () => import(/* webpackChunkName: "blogdetail" */ "@/views/Blog/Detail"),
+    meta: { title: "文章详情" }
+  },
+  {
+    name: "Message",
+    path: "/message",
+    component: () => import(/* webpackChunkName: "message" */ "@/views/Message"),
+    meta: { title: "留言板" }
+  },
+  {
+    name: "Project",
+    path: "/project",
+    component: () => import(/* webpackChunkName: "project" */ "@/views/Project"),
+    meta: { title: "我的项目" }
+  },
 ];
 
 export default routes;
