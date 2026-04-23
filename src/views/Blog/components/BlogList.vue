@@ -47,6 +47,7 @@
           </div>
         </li>
       </ul>
+      <Empty v-if="blog.rows.length === 0 && !isLoading" />
       <div class="pager-outer-container">
         <Pager
           :current="routerInfo.page"
@@ -61,6 +62,7 @@
 
 <script>
 import Pager from "@/components/Pager";
+import Empty from "@/components/Empty";
 import fetchData from "@/mixins/fetchData";
 import { getBlogs } from "@/api/blog";
 import { formatDate } from "@/utils";
@@ -71,7 +73,7 @@ export default {
     fetchData("_fetchData", { rows: [] }, "blog"),
     mainScroll("container"),
   ],
-  components: { Pager },
+  components: { Pager, Empty },
   computed: {
     routerInfo() {
       const categoryId = +this.$route.params.categoryId || -1;

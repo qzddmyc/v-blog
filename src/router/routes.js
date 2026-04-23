@@ -1,4 +1,5 @@
 import "nprogress/nprogress.css";
+import NotFound from "@/views/NotFound";
 import { start, done, configure } from "nprogress";
 
 configure({
@@ -81,6 +82,12 @@ const routes = [
     ),
     meta: { title: "我的项目" }
   },
+  {
+    name: "NotFound",
+    path: "*",
+    component: NotFound,
+    meta: { title: "页面不存在" }
+  }
 ];
 
 export default routes;

@@ -21,15 +21,18 @@
       </div>
       <div class="project-separate-line" v-if="idx !== data.length - 1"></div>
     </div>
+    <Empty v-if="data.length === 0 && !loading" />
   </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
 import mainScroll from "@/mixins/mainScroll";
+import Empty from "@/components/Empty";
 
 export default {
   mixins: [mainScroll("project-scroll-dom")],
+  components: { Empty },
   computed: mapState("project", ["loading", "data"]),
   created() {
     this.$store.dispatch("project/fetchProject");
